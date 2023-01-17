@@ -11,12 +11,10 @@ logger = create_logger('Message operations')
 async def check_message(message: types.Message):
     """Проверяет сообщения на наличие ссылок и не английских слов"""
     if _messages_with_links(message):
-        await message.delete()
         logger.info('Удалено сообщение содержащие ссылку')
         return {'deleted': True, 'message': MessagesAnswear.message_with_link_answear}
 
     if _messages_without_english_words(message):
-        await message.delete()
         logger.info('Удалено сообщение не содержащие английские слова')
         return {'deleted': True, 'message': MessagesAnswear.message_without_english}
 
