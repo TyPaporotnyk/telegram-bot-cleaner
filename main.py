@@ -46,7 +46,23 @@ async def message_handler(message: types.Message):
 @dp.message_handler(content_types = ['new_chat_members', 'left_chat_member'])
 async def delete_system_messages(message: types.Message):
     """Удаляет сообщения о присоединении или удалнеии пользователя"""
+    chat_id = message['chat']['id']
+    user_name = message['from']['username']
+    for member in message['new_chat_members']:
+        member_is_bot = member['is_bot']
+        member_id = member['id']
+        member_username = member['username']
+
+        if member_is_bot:
+            await bot.ban_chat_member(chat_id=chat_id, user_id=member_id)
+            for admin in ADMINS_ID:
+                await bot.send_message(admin, f"@{user_name} added new User @{member_username} is bot")
+        else:
+            for admin in ADMINS_ID:
+                await bot.send_message(admin, f"@{user_name} added new User @{member_username}")
+
     await message.delete()
+
     logger.info('Служебное сообщение удалено')
 
 
@@ -59,7 +75,6 @@ async def delete_sended_messages():
             logger.warning('Сообщение уже было удалено')
 
     sended_messages.clear()
-    logger.info('Список отправленных сообщений был очищен')
 
 
 async def sheduler():

@@ -32,4 +32,4 @@ def _messages_with_links(message: types.Message) -> bool:
 def _messages_without_english_words(message: types.Message) -> bool:
     """Проверяет наличие в сообщении не английских слов"""
     message = re.sub(r'[\W_]+', '', message['text'])
-    return len(re.findall(r'[^a-zA-Z]', message)) > 0
+    return len(re.findall(r'[^a-zA-Z0-9]', message)) > 0
