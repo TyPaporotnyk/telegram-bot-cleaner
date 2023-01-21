@@ -42,6 +42,8 @@ async def message_handler(message: types.Message):
             message_id = message_id['message_id']
             sended_messages.append({'chat_id': chat_id, 'message_id': message_id})
 
+            logger.info(f'Удалено сообщение от пользователя [{user_id}] с ником @{username}')
+
 
 @dp.message_handler(content_types = ['new_chat_members', 'left_chat_member'])
 async def delete_system_messages(message: types.Message):
